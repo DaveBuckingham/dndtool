@@ -1,10 +1,6 @@
 keep a structure for commands such as 'database' and 'help' and 'quit'
-initiative
-hermit background
-more generators (the only one right now is 'weather')
-custom completion function to ignore case
-monsters (currently only have 'panther')
-wrap at actual screen width (with indentation) instead of 80
+more generators
+wrap at actual screen width
 travel pace
 
 config file
@@ -13,6 +9,8 @@ config file
     colors
     terminal width
 
+parameters
+    database url
 
 
 
