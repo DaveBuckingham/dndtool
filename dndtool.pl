@@ -7,7 +7,7 @@ use JSON;
 
 
 
-#      o--|===========>  dndtool v0.3  <===========|--o
+#      o--|===========>  dndtool  <===========|--o
 
 
 
@@ -706,20 +706,29 @@ sub print_monster {
 
     # SPECIAL ABILITIES
     foreach my $a (@{$stats{'special_abilities'}}) {
-        $print_string .= $a->{'name'} . ": ";
+        $print_string .= $a->{'name'};
+        if ($a->{'usage'}) {
+            print_string .= print_usage($a->{'usage'});
+        }
+        $print_string .= ": ";
         $print_string .= $a->{'desc'};
         $print_string .= "\n\n";
     }
 
+    # ACTIONS
+    $print_string .= "Actions\n";
+    $print_string .= $HR;
+
+    foreach my $a (@{$stats{'actions'}}) {
+        $print_string .= $a->{'name'};
+        if ($a->{'usage'}) {
+            print_string .= print_usage($a->{'usage'});
+        }
+        $print_string .= ": ";
+    }
 
 
 
-
-
-
-#    $print_string .= ("Senses: " . $stats{'senses'} . "\n");
-#    $print_string .= ("Languages: " . $stats{'languages'} . "\n");
-#    $print_string .= ("Challenge: " . $stats{'challenge'}. "\n");
 #
 #    $print_string .= $HR;
 #    $print_string .= $stats{'description'};
@@ -933,7 +942,7 @@ $terminal->Attribs->{completer_word_break_characters} = "";
 
 
 # PRINT STARTUP MESSAGE
-print("o--|===========>  dndtool v0.3  <===========|--o\n\n");
+print("o--|===========>  dndtool  <===========|--o\n\n");
 
 
 # MAIN LOOP
