@@ -16,10 +16,6 @@ use JSON;
 my $URL_BASE = 'http://localhost:3000';
 
 
-# THESE MAKE UP THE DATABASE, WILL STORE DATA READ IN FROM FILES
-my %spells;
-my %definitions;
-my %monsters;
 my %generators;
 
 my @legal_dice = (4, 6, 8, 10, 12, 20, 100);
@@ -83,11 +79,8 @@ sub page {
     # ESCAPE QUOTES
     my $clean = $_[0] =~ s/"/\\\"/gr;
 
-    # WRAP TEXT
-    my $wrapped = `echo '$clean' | fmt -s -w $TERMINAL_WIDTH`;
-
-    # SEND TO LESS
-    system("echo \"$wrapped\" | less -FK");
+    # WRAP AND PAGE
+    system("echo \"$clean\" | fmt -s -w $TERMINAL_WIDTH | less -FK");
 }
 
 
@@ -96,39 +89,21 @@ sub search {
     my $pattern = $_[0];
     my $print_string = '';
 
-    foreach my $key (keys(%definitions))
+    foreach my $key (keys(%database))
     {
-        if (($key =~ m/$pattern/i) || ($definitions{$key}{description} =~ m/$pattern/i))
-        {
-            $print_string .= "- $key\n";
+        if (($key =~ m/$pattern/i)) {
+            if ($database{$key}->{'type'} eq 'spell') {
+                $print_string .= "* ";
+            }
+            elsif ($database{$key}->{'type'} eq 'monster') {
+                $print_string .= "! ";
+            }
+            else {
+                $print_string .= "- ";
+            }
+            $print_string .= "$key\n";
         }
     }
-
-#     foreach my $key (keys(%spells))
-#     {
-#         if (($key =~ m/$pattern/i) ||
-#             ($spells{$key}{description} =~ m/$pattern/i) ||
-#             ($spells{$key}{class} =~ m/$pattern/i) ||
-#             ($spells{$key}{materials} =~ m/$pattern/i))
-#         {
-#             $print_string .= "* $key\n";
-#         }
-#     }
-# 
-#     foreach my $key (keys(%monsters))
-#     {
-#         if (($key =~ m/$pattern/i) ||
-#            ($monsters{$key}{description} =~ m/$pattern/i) ||
-#            ($monsters{$key}{actions} =~ m/$pattern/i) ||
-#            ($monsters{$key}{name} =~ m/$pattern/i) ||
-#            ($monsters{$key}{skills} =~ m/$pattern/i) ||
-#            ($monsters{$key}{senses} =~ m/$pattern/i) ||
-#            ($monsters{$key}{type} =~ m/$pattern/i) ||
-#            ($monsters{$key}{size} =~ m/$pattern/i))
-#         {
-#             $print_string .= "! $key\n";
-#         }
-#     }
 
     foreach my $key (keys(%generators))
     {
@@ -394,9 +369,6 @@ sub plot
     while ($y > 0)
     {
         my $percent = ($y / $combinations) * 100;
-        #printf("%-4d", $y);     # PRINT THE Y AXIS
-        #printf("'%04.2f'", $percent);     # PRINT THE Y AXIS
-        #printf("%5.2f", $percent);
         foreach my $d (@distribution)
         {
             print($d >= $y ? ' # ' : '   ');
@@ -404,7 +376,6 @@ sub plot
         print("\n");
         $y -= $downsample;
     }
-    #print("     ");
     for (my $i = 0; $i < @distribution; $i++)
     {
         printf(" %-2d", $scalar + $i);
@@ -451,6 +422,7 @@ sub print_level {
     return "${val}th-level";
 }
 
+# FORMAT THE MARKDOWN READ FROM THE DB
 sub markdown {
     my $print = "";
     my @rows = split(/\n/, $_[0]);
@@ -473,7 +445,7 @@ sub markdown {
 }
 
 
-# FORMAT AND PRINT A RULE
+# FORMAT AND PRINT A LIST
 sub print_list {
     my $print_string = "";
     foreach my $item (@{$_[0]->{'items'}}) {
@@ -504,7 +476,6 @@ sub print_spell {
     $print_string .= (' ' . '~' x $border_len . " \n");
     $print_string .= ("{ $spell{'name'} }\n");
     $print_string .= (' ' . '~' x $border_len . " \n");
-
 
     # BASIC SPELL INFO
     my $school = $spell{'school'}->{'name'};
@@ -539,7 +510,6 @@ sub print_spell {
         $print_string .= "$d\n\n";
     }
 
-    # PRINT
     page($print_string);
 }
 
@@ -556,18 +526,15 @@ sub print_monster {
     my $print_string = "";
     my %stats = %{$_[0]};
 
-
     # NAME WITH BORDER
     my $border_len = (length $stats{'name'}) + 2;
     $print_string .= ('+' . '-' x $border_len . "+\n");
     $print_string .= ("| $stats{'name'} |\n");
     $print_string .= ('+' . '-' x $border_len . "+\n");
 
-
     # SIZE, TYPE AND ALIGNMENT
     $print_string .= ($stats{'size'} . " " . $stats{'type'} . ", " . $stats{'alignment'});
     $print_string .= ("\n");
-
 
     # ARMOR CLASS
     $print_string .= ("Armor Class: " . $stats{'armor_class'}[0]->{'value'} . ' ');
@@ -588,10 +555,8 @@ sub print_monster {
         die "failed to read armor";
     }
 
-
     # HIT POINTS
     $print_string .= "Hit Points: $stats{'hit_points'} ($stats{'hit_points_roll'})\n";
-
 
     # SPEED
     $print_string .= "Speed: $stats{'speed'}{'walk'}";
@@ -602,7 +567,6 @@ sub print_monster {
     }
     $print_string .= "\n";
     $print_string .= $HR;
-
 
     # STATS
     $print_string .= ("     ");
@@ -622,7 +586,6 @@ sub print_monster {
     }
     $print_string .= "\n";
     $print_string .= $HR;
-
 
     # PROPERTIES
     my @properties = ();
@@ -727,15 +690,6 @@ sub print_monster {
         $print_string .= ": ";
     }
 
-
-
-#
-#    $print_string .= $HR;
-#    $print_string .= $stats{'description'};
-#    $print_string .= "\n";
-#    $print_string .= "Actions\n";
-#    $print_string .= $stats{'actions'};
-
     page($print_string);
 }
 
@@ -755,7 +709,6 @@ sub parse_command {
         return;
     }
 
-    # NOW THAT WE'RE AFTER A POSSIBLE SEARCH,
     # REMOVE LEADING AND TRAILING WHITESPACE
     $input =~ s/^\s*//;
     $input =~ s/\s*$//;
@@ -775,6 +728,7 @@ sub parse_command {
         return;
     }
 
+    # PRINT THE DATABASE
     if ($input =~ m/^\s*database/) {
         my $print_string = "";
         foreach my $key (sort keys(%database)){
@@ -809,7 +763,6 @@ sub parse_command {
         return;
     }
 
-
     # SEND INPUT TO THE ROLL PARSER
     if(roll($input))
     {
@@ -821,7 +774,6 @@ sub parse_command {
     {
         return;
     }
-
 
     # SEND INPUT TO THE GENERATOR
     if (defined $generators{$input}){
@@ -862,7 +814,8 @@ sub parse_command {
 sub request {
     my $url_suffix = $_[0];
     $client->GET($URL_BASE . $url_suffix, {'Accept' => 'application/json'});
-    die "failed database read" if $client->responseCode() != 200;
+    my $code = $client->responseCode();
+    die "failed database read: $code" if $code != 200;
     return decode_json($client->responseContent());
 }
 
@@ -915,8 +868,6 @@ foreach my $monster (@{request('/api/monsters')->{'results'}}) {
 
 
 
-
-
 # CHECK FOR COMMAND LINE PARAMTER. IF FOUND, PROCESS INPUT AND QUIT
 if (@ARGV > 0) { 
     my $command = join(" ", @ARGV);
@@ -949,14 +900,16 @@ print("o--|===========>  dndtool  <===========|--o\n\n");
 while (1)
 {
     # READ FROM PROMPT
-    my $command = lc($terminal->readline('& '));
+    my $input = $terminal->readline('& ');
+    die "bad input" if !$input;
+    my $command = lc($input);
 
-    # DIE IF INPUT IS EOF (CTRL-D)
-    if (! defined $command)
-    {
-        print("\n");
-        exit(0);
-    }
+#    # DIE IF INPUT IS EOF (CTRL-D)
+#    if (! defined $command)
+#    {
+#        print("\n");
+#        exit(0);
+#    }
 
     # OR IF USER ENTERED A QUIT COMMAND
     exit(0) if ($command =~ m/^quit|^exit|^q$/);
