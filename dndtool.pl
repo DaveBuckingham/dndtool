@@ -7,13 +7,14 @@ use JSON;
 
 
 
-#      o--|===========>  dndtool v0.3  <===========|--o
+#      o--|===========>  dndtool <===========|--o
 
 
 
 
+my $URL_BASE = 'srdapi:3000';
 #my $URL_BASE = 'https://www.dnd5eapi.com';
-my $URL_BASE = 'http://localhost:3000';
+#my $URL_BASE = 'http://localhost:3000';
 
 
 # THESE MAKE UP THE DATABASE, WILL STORE DATA READ IN FROM FILES
@@ -853,7 +854,7 @@ sub parse_command {
 sub request {
     my $url_suffix = $_[0];
     $client->GET($URL_BASE . $url_suffix, {'Accept' => 'application/json'});
-    die "failed database read" if $client->responseCode() != 200;
+    print "failed database read: {$client->responseCode()}" if $client->responseCode() != 200;
     return decode_json($client->responseContent());
 }
 
@@ -933,7 +934,7 @@ $terminal->Attribs->{completer_word_break_characters} = "";
 
 
 # PRINT STARTUP MESSAGE
-print("o--|===========>  dndtool v0.3  <===========|--o\n\n");
+print("o--|===========>  dndtool <===========|--o\n\n");
 
 
 # MAIN LOOP

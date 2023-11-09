@@ -13,6 +13,8 @@ config file
     colors
     terminal width
 
+parameters
+    database url
 
 
 
