@@ -1,0 +1,18 @@
+keep a structure for commands such as 'database' and 'help' and 'quit'
+initiative
+hermit background
+more generators (the only one right now is 'weather')
+custom completion function to ignore case
+monsters (currently only have 'panther')
+wrap at actual screen width (with indentation) instead of 80
+travel pace
+
+config file
+    set prompt
+    shell (for !-passthrough, defaul is bash)
+    colors
+    terminal width
+
+
+
+
