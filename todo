@@ -1,3 +1,6 @@
+spells 'at higher level' not printing
+monster actions not printing
+
 keep a structure for commands such as 'database' and 'help' and 'quit'
 more generators
 wrap at actual screen width

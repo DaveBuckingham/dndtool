@@ -9,6 +9,65 @@ Access to SRD is achieved by virtue of the [D&d 5e SRD API](https://5e-bits.gith
 Full documentation coming soon.
 
 
+## Installation
+
+dndtool is a perl application.
+I expects to be able to call the 'bc' calculator and the 'less' paging tool.
+If your running dndtool in a linux shell, it will probably work, otherwise it probably wont.
+
+
+### Step 1
+
+Make sure that 'perl', 'bc', and 'less' are all installed. For example:
+
+    $ which perl
+    /usr/bin/perl
+    $ which less
+    /usr/bin/less
+    $ which bc
+    /usr/bin/bc
+
+
+### Step 2
+
+Install the dependencies: 'Term::ReadLine::Gnu', 'REST::Client', and 'JSON'.
+For example, using cpanm:
+
+    $ cpanm Term::ReadLine::Gnu REST::Client JSON
+
+
+### Step 3
+
+Run dndtool:
+
+    $ ./dndtool.pl 
+    o--{===========>  dndtool 1.0  <===========}--o
+    connected to https://www.dnd5eapi.co
+    & 
+
+### Step 4 (Optional)
+Set up the database.
+dndtool will try to connect to a 5e database at http://localhost:3000.
+If no local database is found, it will instead connect to the database at
+'https://www.dnd5eapi.co'. There are two advantages to hosting the database locally.
+First, dndtool will run faster, especially when it starts. Second, you can modify
+your local database, for example by adding content not in the SRD.
+You need git, docker, and docker compose.
+
+    $ git clone https://github.com/5e-bits/5e-srd-api.git
+    ...
+    $ cd 5e-srd-api/
+    $ docker compose pull
+    ...
+    $ docker compose up -d --build
+    ...
+    $ cd ../
+    $ ./dndtool
+    o--{===========>  dndtool 1.0  <===========}--o
+    connected to http://localhost:3000
+    & 
+
+
 ## Example commands
 
     ?...............print example commands
@@ -17,23 +76,14 @@ Full documentation coming soon.
     d6..............roll a d6
     3d6+1d4+3.......roll 3d6, add 1d4, and add 3
     123 // 5........divide 123 things among 5 people
-    spell name......look up a spell
-    monster name....look up a monster
-    rule............look up a rule
-    topic...........look up a topic
-    /pattern........search the database
+    database........print all database entries
+    [spell name]....look up a spell
+    [monster name]..look up a monster
+    [topic].........look up a topic
+    /[regex]........search the database
     weather.........randomly generate weather
     clear...........clear the screen
     exit,quit,q.....quit
-
-
-## Installation
-
-relies upon:
-        perl
-        Libterm-readline-gnu-perl
-        bc
-        less
 
 
 ## Rolling dice
@@ -87,12 +137,6 @@ output.  In less, you can use the arrow keys to scroll, type '/' to search
 forwards, type 'q' to quit, and do many other things.
 
 
-## Databases
-
-The 'database' command prints the 5e database.
-Display a database item by entering its name.
-
-
 ## Readline and tab completion
 
 dndtools uses gnu readline. This provides features that users of many shells
@@ -103,6 +147,12 @@ valid completion, it will be filled in automatically.  If there are multiple
 valid completion, hit tab twice to list all options.  Since all keys are lower
 case, tab completion will only work with lower case input.  Tab completion
 searches all keys for handbook entries, spells, monsters, and generators.
+
+
+## Databases
+
+The 'database' command prints the 5e database.
+Display a database item by entering its name.
 
 
 ## Searching
