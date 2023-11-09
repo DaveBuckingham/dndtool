@@ -2,17 +2,16 @@
 
 ### A powerful interactive command line tool for 5e
 
-dndtool gives an interacitve environment that combines access to the 5e SRD,
+dndtool gives an interactive environment that combines access to the 5e SRD,
 shell features such as tab completion and regex search, and a suite of helpful tools such
 as a calculator, dice rollers, generators etc.
 Access to SRD is achieved by virtue of the [D&d 5e SRD API](https://5e-bits.github.io/docs/).
-Full documentation coming soon.
 
 
 ## Installation
 
 dndtool is a perl application.
-I expects to be able to call the 'bc' calculator and the 'less' paging tool.
+It expects to be able to call the 'bc' calculator and the 'less' paging tool.
 If your running dndtool in a linux shell, it will probably work, otherwise it probably wont.
 
 
@@ -47,9 +46,9 @@ Run dndtool:
 
 ### Step 4 (Optional)
 Set up the database.
-dndtool will try to connect to a 5e database at http://localhost:3000.
+dndtool will try to connect to a 5e database at `http://localhost:3000`.
 If no local database is found, it will instead connect to the database at
-'https://www.dnd5eapi.co'. There are two advantages to hosting the database locally.
+`https://www.dnd5eapi.co`. There are two advantages to hosting the database locally.
 First, dndtool will run faster, especially when it starts. Second, you can modify
 your local database, for example by adding content not in the SRD.
 You need git, docker, and docker compose.
@@ -139,14 +138,13 @@ forwards, type 'q' to quit, and do many other things.
 
 ## Readline and tab completion
 
-dndtools uses gnu readline. This provides features that users of many shells
+dndtool uses gnu readline. This provides features that users of many shells
 will find familiar. For example, use the up and down arrows to cycle through
 your command history, or use Control-U to clear the current command.  You can
 use tab completion, just type part of a key and then hit tab. If there is one
 valid completion, it will be filled in automatically.  If there are multiple
-valid completion, hit tab twice to list all options.  Since all keys are lower
-case, tab completion will only work with lower case input.  Tab completion
-searches all keys for handbook entries, spells, monsters, and generators.
+valid completion, hit tab twice to list all options.  Since all database keys
+are lower case, tab completion will only work with lower case input.
 
 
 ## Databases
@@ -159,19 +157,7 @@ Display a database item by entering its name.
 
 If input begins with a forward slash (/), the rest of the input will be used as
 a search pattern (regular expression), and dndtool will list entries that match
-the pattern. Four types of entries may be reported, and the symbol appearing
-before the entry name indicates the type. What text is searched for the pattern
-depends on the type. The key is the entry name.
-
----------------------
-SYMBOL    TYPE       
----------------------
-*         spell      
-!         monster    
--         other
->         generator  
----------------------
-
+the pattern.
 dndtool assumes that whatever follows a '/' is a valid perl regular expression.
 If its not, dndtool may behave unpredictably. If you want to use metacharecters
 literally, you have to escape them etc.
@@ -198,7 +184,6 @@ To quit, enter a quit command ('exit', 'quit', 'q') or send an end-of-file
 ## Non-interactive mode
 
 If dndtool is invoked with any arguments, the arguments are combined into a
-single string, and evaluated by dndtool; the output is printed and the program
-exits. In this example, we need double quotes to protect the single quote from
-the shell:
+single and evaluated. The output is printed and the program
+exits.
 
