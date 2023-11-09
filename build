@@ -1,0 +1,1 @@
+pp -M PAR -o dndtool-$(<VERSION) dndtool.pl
