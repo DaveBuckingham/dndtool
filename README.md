@@ -4,7 +4,7 @@
 ### A powerful interactive command line tool for 5e
 
 dndtool gives an interactive environment that combines access to the 5e SRD,
-shell features such as tab completion and regex search, and a suite of helpful tools such
+convenience features such as tab completion and regex search, and a suite of helpful tools such
 as a calculator, dice rollers, generators etc.
 Access to SRD is achieved by virtue of the [D&d 5e SRD API](https://5e-bits.github.io/docs/).
 
@@ -145,10 +145,10 @@ forwards, type 'q' to quit, and do many other things.
 
 ## Readline and tab completion
 
-dndtool uses gnu readline. This provides features that users of many shells
-will find familiar. For example, use the up and down arrows to cycle through
-your command history, or use Control-U to clear the current command.  You can
-use tab completion, just type part of a key and then hit tab. If there is one
+dndtool uses gnu readline.
+This lets us use the up and down arrows to cycle through
+command history and Control-U to clear the current command.  For
+tab completion, just type part of a key and then hit tab. If there is one
 valid completion, it will be filled in automatically.  If there are multiple
 valid completion, hit tab twice to list all options.  Since all database keys
 are lower case, tab completion will only work with lower case input.
