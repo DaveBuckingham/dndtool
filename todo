@@ -1,3 +1,5 @@
+commands: spells, level . spells, cantrips,monsters
+
 
 more dependencies
     date

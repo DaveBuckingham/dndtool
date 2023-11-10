@@ -32,15 +32,17 @@ my @URLS = ('http://localhost:3000', 'https://www.dnd5eapi.co');  # attempted in
 ####################################################################
 
 
-use constant     BLACK     => "\033[0;30m";
-use constant     RED       => "\033[0;31m";
-use constant     GREEN     => "\033[0;32m";
-use constant     YELLOW    => "\033[0;33m";
-use constant     BLUE      => "\033[0;34m";
-use constant     MAGENTA   => "\033[0;35m";
-use constant     CYAN      => "\033[0;36m";
-use constant     WHITE     => "\033[0;37m";
-use constant     NOCOLOR   => "\033[0m";
+my %colors = (
+    'black'     => "\033[0;30m",
+    'red'       => "\033[0;31m",
+    'green'     => "\033[0;32m",
+    'yellow'    => "\033[0;33m",
+    'blue'      => "\033[0;34m",
+    'magenta'   => "\033[0;35m",
+    'cyan'      => "\033[0;36m",
+    'white'     => "\033[0;37m",
+    'nocolor'   => "\033[0m"
+);
 
 #sub rgb {
 #    assert (0 <= $_[0] <= 255);
@@ -49,21 +51,18 @@ use constant     NOCOLOR   => "\033[0m";
 # because of how less handles escape sequences with the R option,
 # our color commands can't span blocks of text.
 
-my %colors = (
-    'no_color'                         => NOCOLOR,
-    'spell_outline'                    => CYAN,
-    'spell_title'                      => NOCOLOR,
-    'spell_subtitle'                   => NOCOLOR,
-    'spell_stats_keys'                 => NOCOLOR,
-    'spell_stats_values'               => CYAN,
-    'monster_outline'                  => RED,
-    'monster_title'                    => NOCOLOR,
-    'monster_subtitle'                 => YELLOW,
-    'monster_action_name'              => RED,
-    'monster_actions_title'            => YELLOW,
-    'monster_special_abilities_keys'   => YELLOW,
-    'monster_special_abilities_values' => NOCOLOR,
-);
+    $colors{'spell_outline'}                    = $colors{'cyan'};
+    $colors{'spell_title'}                      = $colors{'nocolor'};
+    $colors{'spell_subtitle'}                   = $colors{'nocolor'};
+    $colors{'spell_stats_keys'}                 = $colors{'nocolor'};
+    $colors{'spell_stats_values'}               = $colors{'cyan'};
+    $colors{'monster_outline'}                  = $colors{'red'};
+    $colors{'monster_title'}                    = $colors{'nocolor'};
+    $colors{'monster_subtitle'}                 = $colors{'yellow'};
+    $colors{'monster_action_name'}              = $colors{'red'};
+    $colors{'monster_actions_title'}            = $colors{'yellow'};
+    $colors{'monster_special_abilities_keys'}   = $colors{'yellow'};
+    $colors{'monster_special_abilities_values'} = $colors{'nocolor'};
 
 
 # Collorize a string:
@@ -589,7 +588,7 @@ sub print_spell {
         $print_string .= "$paragraph";
         $print_string .= "\n";
     }
-    $print_string .= $colors{'no_color'};
+    $print_string .= $colors{'nocolor'};
 
     page($print_string);
 }
@@ -669,13 +668,13 @@ sub print_monster {
     my $width = 8;
     $print_string .= $colors{'monster_outline'};
     $print_string .= '+' . '-' x ($width * 6) . '--+' . "\n";
-    $print_string .= $colors{'monster_outline'} . '|' .  $colors{'no_color'};
+    $print_string .= $colors{'monster_outline'} . '|' .  $colors{'nocolor'};
     foreach my $stat ('STR ', 'DEX ', 'CON ', 'INT ', 'WIS ', 'CHA ') {
         $print_string .= sprintf("%${width}s", $stat);
     }
-    $print_string .= $colors{'monster_outline'} . '  |' .  $colors{'no_color'};
+    $print_string .= $colors{'monster_outline'} . '  |' .  $colors{'nocolor'};
     $print_string .= ("\n");
-    $print_string .= $colors{'monster_outline'} . '|' .  $colors{'no_color'};
+    $print_string .= $colors{'monster_outline'} . '|' .  $colors{'nocolor'};
     foreach my $stat ('strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma') {
         my $stat_string = ($stats{$stat});
         $stat_string .= "(";
@@ -685,7 +684,7 @@ sub print_monster {
         $stat_string .= ")";
         $print_string .= sprintf("%${width}s", $stat_string);
     }
-    $print_string .= $colors{'monster_outline'} . '  |' .  $colors{'no_color'};
+    $print_string .= $colors{'monster_outline'} . '  |' .  $colors{'nocolor'};
     $print_string .= "\n";
     $print_string .= $colors{'monster_outline'};
     $print_string .= '+' . '-' x ($width * 6) . '--+' . "\n";
@@ -799,7 +798,7 @@ sub print_monster {
             $print_string .= ' ' . print_usage($a->{'usage'});
         }
         $print_string .= ": ";
-        $print_string .= $colors{'no_color'};
+        $print_string .= $colors{'nocolor'};
         $a->{'desc'} =~ s/target/mmm/g;
         $print_string .= $a->{'desc'};
         $print_string .= "\n\n";
@@ -824,7 +823,7 @@ sub print_monster {
             $print_string .= ' ' . print_usage($a->{'usage'});
         }
         $print_string .= ": ";
-        $print_string .= $colors{'no_color'};
+        $print_string .= $colors{'nocolor'};
         $print_string .= $a->{'desc'};
         $print_string .= "\n\n";
     }
@@ -968,7 +967,6 @@ open(FH, '<', 'VERSION') or die $!;
 my $version = <FH>;
 chomp $version;
 close(FH);
-print("o--{===========>  dndtool $version  <===========}--o\n");
 
 
 # FIND DATABASE
@@ -979,12 +977,7 @@ foreach my $url (@URLS) {
         last;
     }
 }
-if ($url_base) {
-    print "connected to $url_base\n";
-}
-else {
-    die "database connection failed\n";
-}
+die "database connection failed\n" if !$url_base;
 
 
 # LOAD SPELLS
@@ -1052,6 +1045,17 @@ $terminal->Attribs->{completion_word} = \@tab_completion_words;
 
 # SEARCH STARTING WITH BEGINNING OF INPUT, NOT LAST WORD
 $terminal->Attribs->{completer_word_break_characters} = "";
+
+
+# PRINT BANNER
+page(color_format("^o--{^===========>  ^dndtool $version  ^<===========^}--o", [
+    $colors{'yellow'},
+    $colors{'cyan'},
+    $colors{'nocolor'},
+    $colors{'cyan'}, 
+    $colors{'yellow'}]));
+
+page("connected to $url_base");
 
 
 # MAIN LOOP

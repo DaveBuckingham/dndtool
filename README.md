@@ -17,14 +17,14 @@ If your running dndtool in a linux shell, it will probably work, otherwise it pr
 
 ### Step 1
 
-Make sure that 'perl', 'bc', and 'less' are all installed. For example:
+If you're not sure, check that 'perl', 'bc', 'date', 'clear', and 'less' are all installed. For example:
 
-    $ which perl
+    $ which perl bc date clear less
     /usr/bin/perl
-    $ which less
-    /usr/bin/less
-    $ which bc
     /usr/bin/bc
+    /usr/bin/date
+    /usr/bin/clear
+    /usr/bin/less
 
 
 ### Step 2
