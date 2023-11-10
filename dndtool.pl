@@ -558,7 +558,7 @@ sub print_spell {
     my $level = $spell{'level'};
     $print_string .= $colors{'spell_subtitle'};
     if ($level == 0 ) {
-        $print_string .= $school . print_level($level) . "\n";
+        $print_string .= $school . ' ' . print_level($level) . "\n";
     }
     else {
         $print_string .= print_level($level) . " " . lc($school) . "\n";

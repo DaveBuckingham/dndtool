@@ -1,5 +1,7 @@
 commands: spells, level . spells, cantrips,monsters
 
+process subsections of rules into their own rules
+
 
 more dependencies
     date

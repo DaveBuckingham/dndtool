@@ -1,3 +1,9 @@
+![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_goblin.png?raw=true)
+![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_spell.png?raw=true)
+![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_plot.png?raw=true)
+![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_list.png?raw=true)
+
+
 # dndtool
 
 ### A powerful interactive command line tool for 5e
