@@ -1,19 +1,18 @@
-spells 'at higher level' not printing
-monster actions not printing
 
-keep a structure for commands such as 'database' and 'help' and 'quit'
+more dependencies
+    date
+    shell
+    clear
+
 more generators
 wrap at actual screen width
-travel pace
+travel pace calculator
 
 config file
-    set prompt
     shell (for !-passthrough, defaul is bash)
     colors
     terminal width
 
-parameters
-    database url
 
 
 
