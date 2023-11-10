@@ -1,8 +1,3 @@
-![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_goblin.png?raw=true)
-![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_spell.png?raw=true)
-![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_plot.png?raw=true)
-![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_list.png?raw=true)
-
 
 # dndtool
 
@@ -12,6 +7,12 @@ dndtool gives an interactive environment that combines access to the 5e SRD,
 shell features such as tab completion and regex search, and a suite of helpful tools such
 as a calculator, dice rollers, generators etc.
 Access to SRD is achieved by virtue of the [D&d 5e SRD API](https://5e-bits.github.io/docs/).
+
+
+![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_goblin.png?raw=true)
+![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_spell.png?raw=true)
+![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_plot.png?raw=true)
+![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_list.png?raw=true)
 
 
 ## Installation
