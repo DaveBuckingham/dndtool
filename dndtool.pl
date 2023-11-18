@@ -23,7 +23,7 @@ my %generators;  # e.g. weather generator
 
 my $client = REST::Client->new();
 
-my @URLS = ('http://localhost:3000', 'https://www.dnd5eapi.co');  # attempted in order
+my @URLS = ( '5e-srd-api', 'http://localhost:3000', 'https://www.dnd5eapi.co' );  # attempted in order
 
 
 

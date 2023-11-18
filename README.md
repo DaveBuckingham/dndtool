@@ -15,28 +15,32 @@ Access to SRD is achieved by virtue of the [D&d 5e SRD API](https://5e-bits.gith
 ![sreenshot](https://github.com/davebuckingham/dndtool/blob/main/screenshots/screenshot_list.png?raw=true)
 
 
-## Installation
+
+## Docker
+
+The Dockerfile works but I don't know how to make the output go through the 
+container terminal. See how the otput gets made in the 'page' function on line 471, which sends the output through `fomat` and `less`. When I run the container, I get the
+intro prompt, which doesn't go through 'page', nothing after that.
 
 dndtool is a perl application.
 It expects to be able to call the 'bc' calculator and the 'less' paging tool.
 If your running dndtool in a linux shell, it will probably work, otherwise it probably wont.
 
 
+## Installation
+
 ### Step 1
 
-If you're not sure, check that 'perl', 'bc', 'date', 'clear', and 'less' are all installed. For example:
+Use your package management system to install the following programs:
 
-    $ which perl bc date clear less
-    /usr/bin/perl
-    /usr/bin/bc
-    /usr/bin/date
-    /usr/bin/clear
-    /usr/bin/less
+    perl
+    less
+    bc
 
 
 ### Step 2
 
-Install the dependencies: 'Term::ReadLine::Gnu', 'REST::Client', and 'JSON'.
+Install the perl dependencies: 'Term::ReadLine::Gnu', 'REST::Client', and 'JSON'.
 For example, using cpanm:
 
     $ cpanm Term::ReadLine::Gnu REST::Client JSON
